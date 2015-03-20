@@ -1,5 +1,6 @@
 package com.mariondepuydt.musei;
 
+import android.app.ListActivity;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,19 +10,24 @@ import android.view.MenuItem;
 import android.content.Intent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
 public class AddMessage extends ActionBarActivity {
     public final static String EXTRA_MESSAGE = "com.mariondepuydt.musei.MESSAGE";
+    ArrayAdapter<String> list;
+    ListView listView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_message);
-
+        list = new ArrayAdapter<String>(this, R.layout.list_message, R.id.message_1);
+        listView = (ListView) findViewById(R.id.list_message);
     }
 
 
@@ -56,15 +62,12 @@ public class AddMessage extends ActionBarActivity {
     /** Called when the user clicks the Send button */
     public void sendMessage(View view) {
         // Do something in response to button
-        //Intent intent = new Intent(this, DisplayMessageActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
-        TextView mess = (TextView) findViewById(R.id.message_1);
-        mess.setText(message);
+        list.add(message);
+        listView.setAdapter(list);
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-        //intent.putExtra(EXTRA_MESSAGE, message);
-        //startActivity(intent);
-
+        editText.setText("");
     }
 }
