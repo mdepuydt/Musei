@@ -4,6 +4,7 @@ import android.app.ListActivity;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ public class AddMessage extends ActionBarActivity {
     public final static String EXTRA_MESSAGE = "com.mariondepuydt.musei.MESSAGE";
     ArrayAdapter<String> list;
     ListView listView = null;
+    Connect myConnect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class AddMessage extends ActionBarActivity {
     /** Called when the user clicks the Send button */
     public void sendMessage(View view) {
         // Do something in response to button
+        Log.i("AddMessage","youyou");
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
         list.add(message);

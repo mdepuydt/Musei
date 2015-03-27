@@ -15,7 +15,7 @@ public class DisplayMessageActivity extends ActionBarActivity {
     int myQRCode = 1;
     String myAuthor = "Quentin";
     String myDate = "20-03-2015";
-    Connect myConnect = new Connect();
+    Connect myConnect;
 
 
     @Override
@@ -70,12 +70,13 @@ public class DisplayMessageActivity extends ActionBarActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Connect.connectEnd();
+        myConnect.connectEnd();
     }
 
     public void onSaveMessage(String message) {
         String myMessage = message;
         try {
+            //ResultSet result = Connect.onConnect().executeQuery("INSERT INTO Messages VALUES ('myQRCode', 'myMessage', 'myAuthor', 'myDate'");
             ResultSet result = myConnect.onConnect().executeQuery("INSERT INTO Messages VALUES ('myQRCode', 'myMessage', 'myAuthor', 'myDate'");
         } catch (SQLException e) {
             e.printStackTrace();
