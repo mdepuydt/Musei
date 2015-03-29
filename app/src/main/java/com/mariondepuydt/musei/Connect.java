@@ -7,14 +7,14 @@ import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-
 public class Connect {
     Statement state;
-    private String url = "jdbc:sqlite:test.db";
+    private String url = "jdbc:sqlite:comment.db";
     private static Connection conn;
     // Singleton class
     private Connect(){
         try {
+            Log.i("Connect", "first line");
             Class.forName("org.sqlite.JDBC");
             System.out.println("Driver O.K.");
             Log.i("Connect", "drive ok");
@@ -24,10 +24,12 @@ public class Connect {
             System.out.println("Connexion effective !");
         } catch (Exception e) {
             e.printStackTrace();
+            Log.i("Connect", "drive not ok");
         }
     }
 
     public static Connection getInstance() {
+        Log.i("GetInstance", "in");
         if(conn == null) {
             new Connect();
         }
