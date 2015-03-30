@@ -47,6 +47,7 @@ public class AddMessage extends ActionBarActivity {
     // contacts JSONArray
     JSONArray comments = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
