@@ -14,6 +14,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.metaio.sdk.ARViewActivity;
+import com.metaio.sdk.jni.IGeometry;
+import com.metaio.sdk.jni.IMetaioSDKCallback;
+
 import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,7 +35,7 @@ import java.util.UUID;
 
 
 
-public class AddMessage extends ActionBarActivity {
+public class AddMessage extends ARViewActivity {
     public final static String EXTRA_MESSAGE = "com.mariondepuydt.musei.MESSAGE";
     ArrayAdapter<String> list;
     ListView listView = null;
@@ -49,7 +54,27 @@ public class AddMessage extends ActionBarActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getGUILayout() {
+        return 0;
+    }
+
+    @Override
+    protected IMetaioSDKCallback getMetaioSDKCallbackHandler() {
+        return null;
+    }
+
+    @Override
+    protected void loadContents() {
+
+    }
+
+    @Override
+    protected void onGeometryTouched(IGeometry geometry) {
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_message);
         list = new ArrayAdapter<String>(this, R.layout.list_message, R.id.message_1);

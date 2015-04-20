@@ -6,4 +6,5 @@
     <string name="title_activity_display_message">My Message</string>
     <string name="action_search">Search</string>
     <string name="hello_world">Bim!</string>
+    <string name="metaioSDKSignature">CT/dDV8jMnJaBkIGk4PHJXDsUL9kuU7FmqEL+OjCZlA=</string>
 </resources>
