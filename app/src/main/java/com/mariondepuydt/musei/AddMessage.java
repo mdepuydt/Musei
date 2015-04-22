@@ -1,7 +1,9 @@
 package com.mariondepuydt.musei;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.os.AsyncTask;
@@ -18,6 +20,8 @@ import android.widget.ListView;
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
+import com.metaio.sdk.jni.TrackingValues;
+import com.metaio.sdk.jni.TrackingValuesVector;
 
 import java.util.*;
 import java.text.DateFormat;
@@ -34,7 +38,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 
-
 public class AddMessage extends ARViewActivity {
     public final static String EXTRA_MESSAGE = "com.mariondepuydt.musei.MESSAGE";
     ArrayAdapter<String> list;
@@ -47,21 +50,102 @@ public class AddMessage extends ARViewActivity {
     //private static String url = "http://10.0.2.2:3000/db";
     //private static String url = "http://172.25.22.16:3000/db";
     //private static String url = "http://localhost:3000/db";
-    private static String url = "http://172.20.10.2:3000/db";
+    private static String url = "http://192.168.43.33:3000/db";
 
-    // contacts JSONArray
-    JSONArray comments = null;
+    private MetaioSDKCallbackHandler mCallbackHandler;
+    private AddMessage mThis;
+    private AlertDialog mAlert;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mCallbackHandler = new MetaioSDKCallbackHandler();
+
+        // Set QRCode tracking configuration
+        metaioSDK.setTrackingConfiguration("QRCODE");
+        mThis = this;
+        mAlert = null;
+
+        setContentView(R.layout.activity_add_message);
+        list = new ArrayAdapter<String>(this, R.layout.list_message, R.id.message_1);
+        listView = (ListView) findViewById(R.id.list_message);
+        new GetMessages().execute();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCallbackHandler.delete();
+        mCallbackHandler = null;
+    }
 
     @Override
     protected int getGUILayout() {
-        return 0;
+        return R.layout.activity_add_message;
     }
 
     @Override
     protected IMetaioSDKCallback getMetaioSDKCallbackHandler() {
-        return null;
+        return mCallbackHandler;
     }
+
+    final class MetaioSDKCallbackHandler extends IMetaioSDKCallback {
+
+        private String[] tokens;
+
+        @Override
+        public void onTrackingEvent(TrackingValuesVector trackingValues) {
+            for (int i = 0; i < trackingValues.size(); i++) {
+                final TrackingValues v = trackingValues.get(i);
+                if (v.isTrackingState()) {
+                    // reading the code
+                    tokens = v.getAdditionalValues().split("::");
+                    if (tokens.length > 1) {
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                if (mAlert == null) {
+                                    mAlert = new AlertDialog.Builder(mThis)
+                                            .setTitle("Scanned QR-Code")
+                                            .setMessage(tokens[1])
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.cancel();
+                                                }
+                                            })
+                                            .create();
+                                }
+                                if (!mAlert.isShowing()) {
+                                    mAlert.setMessage(tokens[1]);
+                                    mAlert.show();
+                                }
+                            }
+                        });
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    public void onButtonClick(View v)
+    {
+        finish();
+    }
+
+
+    // contacts JSONArray
+    JSONArray comments = null;
+
 
     @Override
     protected void loadContents() {
@@ -72,16 +156,6 @@ public class AddMessage extends ARViewActivity {
     protected void onGeometryTouched(IGeometry geometry) {
 
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_message);
-        list = new ArrayAdapter<String>(this, R.layout.list_message, R.id.message_1);
-        listView = (ListView) findViewById(R.id.list_message);
-        new GetMessages().execute();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -125,6 +199,14 @@ public class AddMessage extends ARViewActivity {
         editText.setText("");
     }
 
+    /** Called when the user clicks the Info Button */
+    public void infoArt(View view) {
+        // Do something in response to button
+        Log.i("Press Button","working");
+        //unOnUiThread(new Runnable());
+
+    }
+
     private class PostMessage extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog pDialog;
@@ -153,7 +235,7 @@ public class AddMessage extends ARViewActivity {
             nameValuePair.add(new BasicNameValuePair("date", dat.toString()));
             nameValuePair.add(new BasicNameValuePair("author", uniqueId));
             // Making a request to url and getting response
-            url = "http://172.20.10.2:3000/comments";
+            url = "http://192.168.43.33:3000/comments";
             String jsonStr = sh.makeServiceCall(url, ServiceHandler.POST, nameValuePair);
             Log.d("Response: ", "> " + jsonStr);
             return null;
