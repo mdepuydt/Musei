@@ -1,7 +1,12 @@
 package com.mariondepuydt.musei;
 
+<<<<<<< HEAD
+=======
+import android.app.AlertDialog;
+>>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.os.AsyncTask;
@@ -14,6 +19,30 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+<<<<<<< HEAD
+import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.UUID;
+
+=======
+>>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
+
+import com.metaio.sdk.ARViewActivity;
+import com.metaio.sdk.jni.IGeometry;
+import com.metaio.sdk.jni.IMetaioSDKCallback;
+import com.metaio.sdk.jni.TrackingValues;
+import com.metaio.sdk.jni.TrackingValuesVector;
+
 import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -29,8 +58,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 
-
-public class AddMessage extends ActionBarActivity {
+public class AddMessage extends ARViewActivity {
     public final static String EXTRA_MESSAGE = "com.mariondepuydt.musei.MESSAGE";
     ArrayAdapter<String> list;
     ListView listView = null;
@@ -42,20 +70,122 @@ public class AddMessage extends ActionBarActivity {
     //private static String url = "http://10.0.2.2:3000/db";
     //private static String url = "http://172.25.22.16:3000/db";
     //private static String url = "http://localhost:3000/db";
+<<<<<<< HEAD
     private static String url = "http://172.20.10.2:3000/db";
 
     // contacts JSONArray
     JSONArray comments = null;
+=======
+    private static String url = "http://192.168.43.33:3000/db";
+
+    private MetaioSDKCallbackHandler mCallbackHandler;
+    private AddMessage mThis;
+    private AlertDialog mAlert;
+>>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCallbackHandler = new MetaioSDKCallbackHandler();
+
+        // Set QRCode tracking configuration
+        metaioSDK.setTrackingConfiguration("QRCODE");
+        mThis = this;
+        mAlert = null;
+
         setContentView(R.layout.activity_add_message);
         list = new ArrayAdapter<String>(this, R.layout.list_message, R.id.message_1);
         listView = (ListView) findViewById(R.id.list_message);
         new GetMessages().execute();
+<<<<<<< HEAD
+=======
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCallbackHandler.delete();
+        mCallbackHandler = null;
+    }
+
+    @Override
+    protected int getGUILayout() {
+        return R.layout.activity_add_message;
+    }
+
+    @Override
+    protected IMetaioSDKCallback getMetaioSDKCallbackHandler() {
+        return mCallbackHandler;
+    }
+
+    final class MetaioSDKCallbackHandler extends IMetaioSDKCallback {
+
+        private String[] tokens;
+
+        @Override
+        public void onTrackingEvent(TrackingValuesVector trackingValues) {
+            for (int i = 0; i < trackingValues.size(); i++) {
+                final TrackingValues v = trackingValues.get(i);
+                if (v.isTrackingState()) {
+                    // reading the code
+                    tokens = v.getAdditionalValues().split("::");
+                    if (tokens.length > 1) {
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                if (mAlert == null) {
+                                    mAlert = new AlertDialog.Builder(mThis)
+                                            .setTitle("Scanned QR-Code")
+                                            .setMessage(tokens[1])
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.cancel();
+                                                }
+                                            })
+                                            .create();
+                                }
+                                if (!mAlert.isShowing()) {
+                                    mAlert.setMessage(tokens[1]);
+                                    mAlert.show();
+                                }
+                            }
+                        });
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    public void onButtonClick(View v)
+    {
+        finish();
+>>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
+    }
+
+
+    // contacts JSONArray
+    JSONArray comments = null;
+
+
+    @Override
+    protected void loadContents() {
+
+    }
+
+    @Override
+    protected void onGeometryTouched(IGeometry geometry) {
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,6 +229,17 @@ public class AddMessage extends ActionBarActivity {
         editText.setText("");
     }
 
+<<<<<<< HEAD
+=======
+    /** Called when the user clicks the Info Button */
+    public void infoArt(View view) {
+        // Do something in response to button
+        Log.i("Press Button","working");
+        //unOnUiThread(new Runnable());
+
+    }
+
+>>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
     private class PostMessage extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog pDialog;
@@ -127,7 +268,11 @@ public class AddMessage extends ActionBarActivity {
             nameValuePair.add(new BasicNameValuePair("date", dat.toString()));
             nameValuePair.add(new BasicNameValuePair("author", uniqueId));
             // Making a request to url and getting response
+<<<<<<< HEAD
             url = "http://172.20.10.2:3000/comments";
+=======
+            url = "http://192.168.43.33:3000/comments";
+>>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
             String jsonStr = sh.makeServiceCall(url, ServiceHandler.POST, nameValuePair);
             Log.d("Response: ", "> " + jsonStr);
             return null;
