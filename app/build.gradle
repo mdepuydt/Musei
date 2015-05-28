@@ -23,8 +23,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile files('libs/sqlite-jdbc-3.8.7.jar')
-<<<<<<< HEAD
-=======
+
     compile project(':metaioSDK')
->>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
 }
