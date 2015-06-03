@@ -1,9 +1,7 @@
 package com.mariondepuydt.musei;
 
-<<<<<<< HEAD
-=======
+
 import android.app.AlertDialog;
->>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,7 +17,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-<<<<<<< HEAD
 import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -33,29 +30,12 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
-
-=======
->>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
 
 import com.metaio.sdk.ARViewActivity;
 import com.metaio.sdk.jni.IGeometry;
 import com.metaio.sdk.jni.IMetaioSDKCallback;
 import com.metaio.sdk.jni.TrackingValues;
 import com.metaio.sdk.jni.TrackingValuesVector;
-
-import java.util.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.UUID;
 
 
 public class AddMessage extends ARViewActivity {
@@ -70,18 +50,15 @@ public class AddMessage extends ARViewActivity {
     //private static String url = "http://10.0.2.2:3000/db";
     //private static String url = "http://172.25.22.16:3000/db";
     //private static String url = "http://localhost:3000/db";
-<<<<<<< HEAD
     private static String url = "http://172.20.10.2:3000/db";
 
     // contacts JSONArray
     JSONArray comments = null;
-=======
-    private static String url = "http://192.168.43.33:3000/db";
+    //private static String url = "http://192.168.43.33:3000/db";
 
     private MetaioSDKCallbackHandler mCallbackHandler;
     private AddMessage mThis;
     private AlertDialog mAlert;
->>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,8 +74,7 @@ public class AddMessage extends ARViewActivity {
         list = new ArrayAdapter<String>(this, R.layout.list_message, R.id.message_1);
         listView = (ListView) findViewById(R.id.list_message);
         new GetMessages().execute();
-<<<<<<< HEAD
-=======
+
     }
 
     @Override
@@ -169,12 +145,11 @@ public class AddMessage extends ARViewActivity {
     public void onButtonClick(View v)
     {
         finish();
->>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
     }
 
 
     // contacts JSONArray
-    JSONArray comments = null;
+    //JSONArray comments = null;
 
 
     @Override
@@ -229,8 +204,7 @@ public class AddMessage extends ARViewActivity {
         editText.setText("");
     }
 
-<<<<<<< HEAD
-=======
+
     /** Called when the user clicks the Info Button */
     public void infoArt(View view) {
         // Do something in response to button
@@ -239,7 +213,6 @@ public class AddMessage extends ARViewActivity {
 
     }
 
->>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
     private class PostMessage extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog pDialog;
@@ -268,11 +241,8 @@ public class AddMessage extends ARViewActivity {
             nameValuePair.add(new BasicNameValuePair("date", dat.toString()));
             nameValuePair.add(new BasicNameValuePair("author", uniqueId));
             // Making a request to url and getting response
-<<<<<<< HEAD
             url = "http://172.20.10.2:3000/comments";
-=======
-            url = "http://192.168.43.33:3000/comments";
->>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
+            //url = "http://192.168.43.33:3000/comments";
             String jsonStr = sh.makeServiceCall(url, ServiceHandler.POST, nameValuePair);
             Log.d("Response: ", "> " + jsonStr);
             return null;

@@ -31,10 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:hint="@string/edit_message" /> -->
-<<<<<<< HEAD
 
-=======
->>>>>>> 0cb118152762e51c48d8adb2fcbfc38eaad09a38
         <Button
             android:id="@+id/button_send"
             android:layout_width="wrap_content"
